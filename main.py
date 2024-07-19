@@ -27,7 +27,7 @@ def generate_context():
     """
     
     try:
-        response = openai.Completion.create(
+        response = client.chat.completions.create(
             model="text-davinci-003",
             prompt=prompt1,
             max_tokens=500,
@@ -45,7 +45,7 @@ student_context = st.text_area("이 학생의 맥락을 자세히 작성해주�
 if st.button("학생 맥락 생성"):
     with st.spinner('여러분~ 잠시만 기다려주세요'):
         generate_context()
-        
+
 # Step 2: AIDT 기능 선택
 st.subheader("STEP 2. AIDT 기능 선택")
 aidt_functions = {
