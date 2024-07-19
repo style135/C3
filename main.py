@@ -97,7 +97,11 @@ AIDT 기능:
 {high_touch}
 
 당신은 선생님의 하이터치 전략 수립을 평가해주는 챗봇입니다.
-학생 맥락, AIDT 기능, 인지적 및 정서적 지원, 맞춤형 지원, 필요한 데이터 등을 종합하여 하이터치 전략이 우수한지 평가해주세요.
+학생 맥락, AIDT 기능, 인지적 및 정서적 지원, 맞춤형 지원, 필요한 데이터 등을 종합하여 하이터치 전략이 올바른지 알려주면 됩니다.
+결과는 아래와 같이 적어주면 됩니다.
+당신의 하이터치 전략은 훌륭합니다. 하지만, --- 부분을 수정한다면 더 좋은 하이터치 전략이 될것이라 생각됩니다.
+
+
 ```은 좋은 하이터치 전략의 예시입니다.
 
 ```
@@ -121,7 +125,7 @@ if st.button("평가하기"):
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
-                {"role": "system", "content": prompt1},
+                {"role": "system", "content": full_prompt},
             ],
             max_tokens=500,
             temperature=0.3
