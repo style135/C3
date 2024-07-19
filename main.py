@@ -30,8 +30,10 @@ def generate_context():
     try:
         client = OpenAI()
         response = client.chat.completions.create(    
-            model="text-davinci-003",
-            prompt=prompt1,
+            model="gpt-4o",
+            messages=[
+                {"role": "system", "content": prompt1},
+            ],
             max_tokens=500,
             temperature=0.3
         )
