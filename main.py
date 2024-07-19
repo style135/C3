@@ -7,7 +7,7 @@ import time
 # api_key = os.getenv("OPENAI_API_KEY")
 
 # 환경 변수에서 OpenAI API 키 가져오기
-load_dotenv()
+# load_dotenv()
 API_KEY = os.environ["OPENAI_API_KEY"]
 
 # 페이지 제목
