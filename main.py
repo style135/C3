@@ -27,7 +27,8 @@ def generate_context():
     """
     
     try:
-        response = client.chat.completions.create(
+        client = OpenAI()
+        response = client.chat.completions.create(    
             model="text-davinci-003",
             prompt=prompt1,
             max_tokens=500,
