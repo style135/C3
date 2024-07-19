@@ -38,7 +38,7 @@ if st.button("학생 맥락 생성"):
             temperature=0.3
         )
 
-        student_context = generated_prompt1 = response.choices[0].message.content
+        student_context = response.choices[0].message.content
 
 # Step 2: AIDT 기능 선택
 st.subheader("STEP 2. AIDT 기능 선택")
