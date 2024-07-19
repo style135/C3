@@ -116,4 +116,4 @@ if st.button("평가하기"):
             temperature=0.3
         )
 
-        student_context = generated_prompt1 = response.choices[0].message.content
+        st.write(response.choices[0].message.content)
