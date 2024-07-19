@@ -37,7 +37,8 @@ def generate_context():
             max_tokens=500,
             temperature=0.3
         )
-        generated_context = response.choices[0].text.strip()
+
+        generated_context = response.choices[0].message.content
         st.session_state.student_context = generated_context
     except Exception as e:
         st.error(f"오류가 발생했습니다: {e}")
