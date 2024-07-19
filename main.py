@@ -1,14 +1,10 @@
 import os
 import streamlit as st
 import openai
-from openai import OpenAI
-import time
-
-# api_key = os.getenv("OPENAI_API_KEY")
 
 # 환경 변수에서 OpenAI API 키 가져오기
-# load_dotenv()
-API_KEY = os.environ["OPENAI_API_KEY"]
+API_KEY = os.getenv("OPENAI_API_KEY")
+openai.api_key = API_KEY
 
 # 페이지 제목
 st.header("AIDT와 관련하여 사회정서학습(SEL) 연결을 도와주는 챗봇")
@@ -16,30 +12,40 @@ st.write('학생 맥락과 AIDT 기능, 그리고 AI 기반 지원 방안을 단
 
 # Step 1: 학생 맥락 입력
 st.subheader("STEP 1. 학생 맥락")
-student_context = st.text_area("이 학생의 맥락을 자세히 작성해주세요.")
 
-prompt1 = """학생의 맥락을 한문장으로 적어줘. 학생의 맥락이란 학생을 둘러싼 여러가지 상황을 말해. 학생의 맥락의 예시는 아래와 같아.
-학생의 학업 성취도가 낮은 상황.
-학업성취도는 높으나 정신적으로 어려움이 있는 상황.
-학업성취도는 중간이고, 교우관계는 좋은 상황.
-주의: 자기관리역량, 협력적 소통역량, 공동체 역량, 정신건강 중 한가지와 학업성취도를 섞어서 적어줘. 
-"""
+# session_state를 이용하여 student_context 상태 관리
+if "student_context" not in st.session_state:
+    st.session_state.student_context = ""
 
-
-if st.button("학생 맥락 생성"):
-    with st.spinner('여러분~ 잠시만 기다려주세요'):
-        client = OpenAI()
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": prompt1},
-            ],
+def generate_context():
+    prompt1 = """
+    학생의 맥락을 한문장으로 적어줘. 학생의 맥락이란 학생을 둘러싼 여러가지 상황을 말해. 학생의 맥락의 예시는 아래와 같아.
+    학생의 학업 성취도가 낮은 상황.
+    학업성취도는 높으나 정신적으로 어려움이 있는 상황.
+    학업성취도는 중간이고, 교우관계는 좋은 상황.
+    주의: 자기관리역량, 협력적 소통역량, 공동체 역량, 정신건강 중 한가지와 학업성취도를 섞어서 적어줘.
+    """
+    
+    try:
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=prompt1,
             max_tokens=500,
             temperature=0.3
         )
+        generated_context = response.choices[0].text.strip()
+        st.session_state.student_context = generated_context
+    except Exception as e:
+        st.error(f"오류가 발생했습니다: {e}")
 
-        student_context = response.choices[0].message.content
+# 텍스트 상자
+student_context = st.text_area("이 학생의 맥락을 자세히 작성해주세요.", value=st.session_state.student_context)
 
+# 학생 맥락 생성을 위한 버튼
+if st.button("학생 맥락 생성"):
+    with st.spinner('여러분~ 잠시만 기다려주세요'):
+        generate_context()
+        
 # Step 2: AIDT 기능 선택
 st.subheader("STEP 2. AIDT 기능 선택")
 aidt_functions = {
